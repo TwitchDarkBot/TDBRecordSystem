@@ -20,6 +20,12 @@ def main(data):
         tm = time.strftime('%Hh%Mm%Ss', time.localtime(time.time()))
         tzdata = dt+"."+tm
         contzdata = "["+dt+" | "+tm+"] "
+        print(contzdata+'Logaing API')
+        print(contzdata+'TDB Sync')
+        #sync
+
+        #sync end
+        print(contzdata+"Getting "+data["username"]+"'s m3u8 data")
         res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"])
         gdata = res.json()
         if gdata["success"] == True:
@@ -53,9 +59,9 @@ def main(data):
             commandline = "mv "+data["username"]+"-"+tzdata+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+tzdata+".mp4"
             os.system(commandline)
         else: 
-            print(data["username"]+'is not streaming')
+            print(contzdata+data["username"]+' is not streaming')
 
-        print('sleep', data["sleeptime"])
+        print(contzdata+'sleep', data["sleeptime"])
         time.sleep(data["sleeptime"])
 
 
