@@ -55,8 +55,8 @@ def main(data):
         else: 
             print(data["username"]+'')
 
-        print('sleep '+sleeptime)
-        time.sleep(sleeptime)
+        print('sleep '+data["sleeptime"])
+        time.sleep(data["sleeptime"])
 
 
 if __name__ == "__main__":
