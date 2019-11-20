@@ -53,9 +53,9 @@ def main(data):
             commandline = "mv "+data["username"]+"-"+tzdata+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+tzdata+".mp4"
             os.system(commandline)
         else: 
-            print(data["username"]+'')
+            print(data["username"]+'is not streaming')
 
-        print('sleep ', data["sleeptime"])
+        print('sleep', data["sleeptime"])
         time.sleep(data["sleeptime"])
 
 
