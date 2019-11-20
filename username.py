@@ -14,22 +14,20 @@ def main(data):
         res = ''
         m3u8id = ''
         quality = ''
-        contzdata = ''
 
-        dt = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-        tm = time.strftime('%Hh%Mm%Ss', time.localtime(time.time()))
-        tzdata = dt+"."+tm
-        contzdata = "["+dt+" | "+tm+"] "
-        print(contzdata+'Logaing API')
-        print(contzdata+'TDB Sync')
+        tz = gettime()
+        tzdata = tz["dt"]+"."+tz["tm"]
+
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
         #sync
-
+        #print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'')
         #sync end
-        print(contzdata+"Getting "+data["username"]+"'s m3u8 data")
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
         res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"])
         gdata = res.json()
         if gdata["success"] == True:
-            print(contzdata+data["username"]+' is streaming.')
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # parsing
             if "1080p60" in gdata["urls"]:    
                 m3u8id = gdata["urls"]["1080p60"]
@@ -53,16 +51,23 @@ def main(data):
                 m3u8id = gdata["urls"]["160p"]
                 quality = '160p'
             # parsing end
-            print(contzdata+'Setting the quality to '+quality)
-            commandline = "streamlink -o '"+data["username"]+"-"+tzdata+".mp4' "+m3u8id+" best"
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
+            commandline = "streamlink -o '"+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+".mp4' "+m3u8id+" best"
             os.system(commandline)
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+'".mp4')
             commandline = "mv "+data["username"]+"-"+tzdata+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+tzdata+".mp4"
             os.system(commandline)
         else: 
-            print(contzdata+data["username"]+' is not streaming')
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARNING: '+data["username"]+'is not streaming')
 
-        print(contzdata+'sleep', data["sleeptime"])
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
         time.sleep(data["sleeptime"])
+
+def gettime():
+    dt = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    tm = time.strftime('%Hh%Mm%Ss', time.localtime(time.time()))
+    rtn = {"dt": dt, "tm": tm}
+    return rtn
 
 
 if __name__ == "__main__":
