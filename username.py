@@ -52,6 +52,10 @@ def main(data):
             os.system(commandline)
             commandline = "mv "+data["username"]+"-"+tzdata+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+tzdata+".mp4"
             os.system(commandline)
+        else: 
+            print(data["username"]+'')
+
+        print('sleep '+sleeptime)
         time.sleep(sleeptime)
 
 
