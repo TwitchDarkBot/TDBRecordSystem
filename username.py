@@ -52,7 +52,7 @@ def main(data):
             commandline = "streamlink -o '"+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+".mp4' "+m3u8id+" best"
             os.system(commandline)
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+'".mp4')
-            commandline = "mv "+data["username"]+"-"+tzdata+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+tzdata+".mp4"
+            commandline = "mv "+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+".mp4 ../record/"+data["username"]+"/"+data["username"]+"-"+time.strftime('%Y-%m-%d.%H:%M:%S', time.localtime(time.time()))+".mp4"
             os.system(commandline)
         else: 
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+'is not streaming')
