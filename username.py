@@ -63,12 +63,6 @@ def main(data):
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
         time.sleep(data["sleeptime"])
 
-def gettime():
-    dt = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-    tm = time.strftime('%Hh%Mm%Ss', time.localtime(time.time()))
-    rtn = {"dt": dt, "tm": tm}
-    return rtn
-
 
 if __name__ == "__main__":
     # do not touch this
@@ -79,9 +73,9 @@ if __name__ == "__main__":
     username = result[0]
     
     # fix this
-
-
-    sleeptime = 120
+    
+    #username = 'streamername'
+    sleeptime = 180
 
     # done
     print('Starting the program')
