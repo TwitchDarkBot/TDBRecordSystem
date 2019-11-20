@@ -15,9 +15,6 @@ def main(data):
         m3u8id = ''
         quality = ''
 
-        tz = gettime()
-        tzdata = tz["dt"]+"."+tz["tm"]
-
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
         #sync
@@ -73,7 +70,7 @@ if __name__ == "__main__":
     username = result[0]
     
     # fix this
-    
+
     #username = 'streamername'
     sleeptime = 180
 
