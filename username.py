@@ -55,7 +55,7 @@ def main(data):
         else: 
             print(data["username"]+'')
 
-        print('sleep '+data["sleeptime"])
+        print('sleep ', data["sleeptime"])
         time.sleep(data["sleeptime"])
 
 
