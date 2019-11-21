@@ -103,8 +103,6 @@ if __name__ == "__main__":
         if f["mvtarget_enable"] == 1:
             data['mvtarget'] = f['mvtarget']
 
-            
-
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
     main(data)
