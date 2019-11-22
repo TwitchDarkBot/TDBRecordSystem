@@ -1,10 +1,9 @@
 import os
 
-if __file__ == "__main__":
+if __name__ == "__main__":
     while True:
-        copyfile = input('STREAMER NAME: ')
-        if copyfile == 'exit':
+        streamer = input('STREAMER NAME: ')
+        if streamer == 'exit':
             exit()
-        commandline = 'cp username.py '+copyfile+'.py'
+        commandline = 'cp username.py '+streamer+'.py'
         os.system(commandline)
-        
