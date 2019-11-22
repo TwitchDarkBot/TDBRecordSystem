@@ -30,7 +30,8 @@ def main(data):
                     m3u8id = gdata["urls"][data['quality']]
                     quality = data['quality']
                 else:
-                    print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown quality. Program exit')
+                    print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown quality. Program exit in 5 secounds.')
+                    time.sleep(5)
                     exit()
             else:
                 if "1080p60" in gdata["urls"]:    
