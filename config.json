@@ -2,8 +2,9 @@
     "username_enable": 0,
     "username": "streamer",
     "quality_enable": 0,
-    "quality": "1080p60",
+    "quality": "best",
     "mvtarget_enable": 0,
     "mvtarget": "../Video",
-    "sleeptime": 180
+    "sleeptime": 180,
+    "fix": 0
 }
