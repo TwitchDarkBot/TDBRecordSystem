@@ -7,6 +7,7 @@ if __name__ == "__main__":
         print('[1] Use PM2          [2] Just copy file')
         mksh = input('[1, 2]: ')
         if mksh == '1':
+            pm2a = 0
             shmake = 1
             if os.path.isfile('./start_pm2.sh'):
                 pm2file = './start_pm2.sh'
@@ -45,6 +46,7 @@ if __name__ == "__main__":
                         f = open(pm2file, 'a')
                         f.write('cd '+now)
                         f.close
+                        pm2a = 1
                         break
                     elif question == '2':
                         os.system('touch ../start_pm2.sh')
@@ -52,10 +54,12 @@ if __name__ == "__main__":
                         f = open(pm2file, 'a')
                         f.write('cd '+now)
                         f.close
+                        pm2a = 1
                         break
                     else:
                         print('Please write down 1, 2')
-            
+            if pm2a == 1:
+                break
         elif mksh == '2':
             shmake = 0
             break
@@ -68,3 +72,6 @@ if __name__ == "__main__":
         if streamer == 'exit':
             exit()
         shutil.copy("username.py", streamer+'.py')
+        if shmake == 1:
+            f = open(pm2file, 'a')
+            f.write('pm2 ')
