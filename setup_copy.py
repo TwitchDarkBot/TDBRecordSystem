@@ -41,10 +41,10 @@ if __name__ == "__main__":
                             break
                         elif question == 2:
                             pm2a = 1
-                            f = open("start_pm2.sh")
+                            f = open(pm2file,'r')
                             lines = f.readlines()
                             f.close()
-                            f = open("start_pm2.sh",'w')
+                            f = open(pm2file,'w')
                             f.writelines([item for item in lines[:-1]])
                             f.close()
                             break
@@ -56,16 +56,16 @@ if __name__ == "__main__":
                         print('INFO: [2] Create script file upper directory')
                         question = int(input('[1, 2]: '))
                         if question == 1:
-                            os.system('touch ./start_pm2.sh')
                             pm2file = './start_pm2.sh'
+                            os.system('touch '+pm2file)
                             f = open(pm2file, 'a')
                             f.write('cd '+now+'\n')
                             f.close
                             pm2a = 1
                             break
                         elif question == 2:
-                            os.system('touch ../start_pm2.sh')
                             pm2file = '../start_pm2.sh'
+                            os.system('touch '+pm2file)
                             f = open(pm2file, 'a')
                             f.write('cd '+now+'\n')
                             f.close
@@ -90,6 +90,7 @@ if __name__ == "__main__":
                 f.write('exit')
                 f.close
                 print('INFO: Closing File OK')
+            os.system('chmod 775 '+pm2file)
             print('INFO: EXIT OK')
             exit()
         shutil.copy("setup_username.py", streamer+'.py')
