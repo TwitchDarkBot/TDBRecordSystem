@@ -30,13 +30,13 @@ if __name__ == "__main__":
                         print('[1] Delete previous file and make new file')
                         print('[2] Fox previous file')
                         question = input('[1, 2]: ')
-                        if question == '1':
+                        if question == 1:
                             os.system('rm '+pm2file)
                             search = 0
                             makepm2 = 1
                             question = ''
                             break
-                        elif question == '2':
+                        elif question == 2:
                             pm2a = 1
                             break
                         else:
@@ -46,7 +46,7 @@ if __name__ == "__main__":
                         print('[1] Create script file on this directory')
                         print('[2] Create script file upper directory')
                         question = input('[1, 2]: ')
-                        if question == '1':
+                        if question == 1:
                             os.system('touch ./start_pm2.sh')
                             pm2file = './start_pm2.sh'
                             f = open(pm2file, 'a')
@@ -54,7 +54,7 @@ if __name__ == "__main__":
                             f.close
                             pm2a = 1
                             break
-                        elif question == '2':
+                        elif question == 2:
                             os.system('touch ../start_pm2.sh')
                             pm2file = '../start_pm2.sh'
                             f = open(pm2file, 'a')
