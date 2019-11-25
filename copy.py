@@ -75,9 +75,10 @@ if __name__ == "__main__":
     while True:
         streamer = input('STREAMER NAME: ')
         if streamer == 'exit':
-            f = open(pm2file, 'a')
-            f.write('exit')
-            f.close
+            if shmake == 1:
+                f = open(pm2file, 'a')
+                f.write('exit')
+                f.close
             exit()
         shutil.copy("username.py", streamer+'.py')
         if shmake == 1:
