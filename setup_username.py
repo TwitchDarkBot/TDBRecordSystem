@@ -84,20 +84,20 @@ def main(data):
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
             fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
             commandline = "streamlink "+m3u8id+" best -o '"+fhname+"-recording.mp4'"
-            subprocess.run(commandline)
-            # os.system(commandline) # streamlink start
+            #subprocess.run([commandline])
+            os.system(commandline) # streamlink start
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
             if data['fix'] == 1: # If fix is true
                 commandline = "ffmpeg -err_detect ignore_err -i "+fhname+"-recording.mp4 -c copy ./"+fhname+".mp4"
-                subprocess.run(commandline)
-                #os.system(commandline)
+                #subprocess.run([commandline])
+                os.system(commandline)
                 commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                subprocess.run(commandline)
-                #os.system(commandline)
+                #subprocess.run([commandline])
+                os.system(commandline)
 
             elif data['fix'] == 0:
                 commandline = "mv "+fhname+"-recording.mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                subprocess.run(commandline)
+                #subprocess.run([commandline])
                 #os.system(commandline)
 
         else: # Streamer is not streaming
