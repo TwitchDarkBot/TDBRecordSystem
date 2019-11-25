@@ -3,15 +3,16 @@ import os
 import platform
 
 if __name__ == "__main__":
+    shmake = 0
     now = os.getcwd()
     plat = platform.system()
     if plat == 'Windows':
-        nul = 0
+        print('Windows cannot use pm2. SKIP.')
     elif plat == 'Linux':
         while True:
             print('[1] Use PM2          [2] Just copy file')
             mksh = input('[1, 2]: ')
-            if mksh == '1':
+            if mksh == 1:
                 pm2a = 0
                 shmake = 1
                 if os.path.isfile('./start_pm2.sh'):
@@ -65,7 +66,7 @@ if __name__ == "__main__":
                             print('Please write down 1, 2')
                 if pm2a == 1:
                     break
-            elif mksh == '2':
+            elif mksh == 2:
                 shmake = 0
                 break
             else:
