@@ -2,8 +2,32 @@ import shutil
 import os
 import platform
 import sys
+import time
 
 if __name__ == "__main__":
+    # Check JSON File
+    if os.path.isfile('./setup_config.json'):
+        if os.path.isfile('./config.json'):
+            os.remove('./setup_config.json')
+        else:
+            shutil.move("setup_config.json", "config.json")
+    elif os.path.isfile('./config.json'):
+        nul = 0
+    else:
+        print('ERROR: No setup_config.json or config.json')
+        print('ERROR: Program will be exit in 5 secounds')
+        time.sleep(5)
+        exit()
+
+    # Check setup_username.py
+    if os.path.isfile('./setup_username.py'):
+        nul = 0
+    else:
+        print('ERROR: No setup_username.py')
+        print('ERROR: Program will be exit in 5 secounds')
+        time.sleep(5)
+        exit()
+        
     shmake = 0
     makepm2 = 0
     now = os.getcwd()
