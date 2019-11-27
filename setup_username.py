@@ -5,7 +5,7 @@ import time
 from parse import compile
 import subprocess
 
-def main(data):
+def main(data, cont):
     # Repeat while KeyboardInterrupt
     while True:
         # Reset data
@@ -14,21 +14,23 @@ def main(data):
         res = ''
         m3u8id = ''
         quality = ''
-
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
-        # TDB sync
+        if cont == False:
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
+            # TDB sync
         
-        # TDB sync end
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
-        res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-        gdata = res.json() # save json
+            # TDB sync end
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
+            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+            gdata = res.json() # save json
         if gdata["success"] == True: # If streamer is streaming
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
+            if cont == False:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # json parsing
             if data['quality_enable'] == 1:
                 if data['quality'] in gdata['urls']:
-                    print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Using config.json quality: '+data['quality'])
+                    if cont == False:
+                        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Using config.json quality: '+data['quality'])
                     m3u8id = gdata["urls"][data['quality']]
                     quality = data['quality']
                 elif data['quailty'] == "best":
@@ -91,6 +93,7 @@ def main(data):
                 commandline = "ffmpeg -err_detect ignore_err -i "+fhname+"-recording.mp4 -c copy ./"+fhname+".mp4"
                 #subprocess.run([commandline])
                 os.system(commandline)
+                os.remove(fhname+'recording.mp4')
                 commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 #subprocess.run([commandline])
                 os.system(commandline)
@@ -99,17 +102,27 @@ def main(data):
                 commandline = "mv "+fhname+"-recording.mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 #subprocess.run([commandline])
                 #os.system(commandline)
+            
+            # Check Streamer is streaming
+            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+            gdata = res.json() # save json
+            if gdata['success'] == True:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
+                cont = True
+            else:
+                cont = False
 
         else: # Streamer is not streaming
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+' is not streaming')
-
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
-        time.sleep(data["sleeptime"])
+        if cont == False:
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
+            time.sleep(data["sleeptime"])
+        elif cont == True:
+            cont = True
 
 
 
 # ===================================================== MAIN
-
 
 
 if __name__ == "__main__":
@@ -202,5 +215,6 @@ if __name__ == "__main__":
 
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
-    main(data)
+    cont = 0
+    main(data, cont)
 
