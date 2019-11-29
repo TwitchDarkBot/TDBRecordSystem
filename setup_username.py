@@ -101,7 +101,7 @@ def main(data, cont):
             elif data['fix'] == 0:
                 commandline = "mv "+fhname+"-recording.mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 #subprocess.run([commandline])
-                #os.system(commandline)
+                os.system(commandline)
             
             # Check Streamer is streaming
             res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
@@ -114,6 +114,7 @@ def main(data, cont):
 
         else: # Streamer is not streaming
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+' is not streaming')
+            cont = False
         if cont == False:
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
             time.sleep(data["sleeptime"])
