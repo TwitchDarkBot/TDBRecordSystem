@@ -4,6 +4,7 @@ import os
 import time
 from parse import compile
 import subprocess
+import platform
 
 def main(data, cont):
     # Repeat while KeyboardInterrupt

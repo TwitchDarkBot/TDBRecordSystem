@@ -26,6 +26,44 @@ if __name__ == "__main__":
     makepm2 = 0
     now = os.getcwd()
     plat = platform.system()
+    # ffmpeg scan
+
+    if plat == 'windows':
+        if os.getenv('ffmpeg') == 'None':
+            if os.path.isfile('./ffmpeg.exe'):
+                nul = 0
+            elif os.path.isfile('../ffmpeg.exe'):
+                nul = 0
+            elif os.path.isfile('./bin/ffmpeg.exe'):
+                nul = 0
+            else:
+                print('WARN: Cannot find ffmpeg. Do you want to download it?')
+                q = 'y'
+                q = input('(Default Y [Y, n]): ')
+
+                if q == 'y':
+                    # Download script
+                elif q == 'Y':
+                    # Download script
+                elif q == 'yes':
+                    # Download script
+                elif q == 'Yes':
+                    # Download script
+                else:
+                    print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
+                    print('ERROR: Exit in 5 secounds')
+                    time.sleep(5)
+                    exit()
+        else:
+            nul = 0
+    elif plat == 'Linux':
+        if os.getenv('ffmpeg') == 'None':
+            print('WARN: Cannot find ffmpeg. Do you want to install it?')
+        else:
+            nul = 0
+
+
+    #pm2
     if plat == 'Windows':
         print('WARN: Windows cannot use pm2. SKIP.')
     elif plat == 'Linux':
