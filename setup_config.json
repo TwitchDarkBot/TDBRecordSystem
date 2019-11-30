@@ -1,9 +1,0 @@
-{
-    "username_enable": 0,
-    "username": "streamer",
-    "quality_enable": 0,
-    "quality": "best",
-    "mvtarget_enable": 0,
-    "mvtarget": "../Video",
-    "sleeptime": 180
-}
