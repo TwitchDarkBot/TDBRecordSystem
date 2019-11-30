@@ -87,25 +87,13 @@ def main(data, cont):
             # parsing end
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
             fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-            commandline = "streamlink "+m3u8id+" best -o '"+fhname+"-recording.mp4'"
+            commandline = "ffmpeg -err_detect ignore_err -i '"+m3u8id+"' -c copy "+fhname+".mp4"
             #subprocess.run([commandline])
             os.system(commandline) # streamlink start
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
-            if data['fix'] == 1: # If fix is true
-                commandline = "ffmpeg -err_detect ignore_err -i "+fhname+"-recording.mp4 -c copy ./"+fhname+".mp4"
-                #subprocess.run([commandline])
-                os.system(commandline)
-                os.remove(fhname+'recording.mp4')
-                commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                #subprocess.run([commandline])
-                os.system(commandline)
-
-            elif data['fix'] == 0:
-                commandline = "mv "+fhname+"-recording.mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                #subprocess.run([commandline])
-                os.system(commandline)
-            
-            # Check Streamer is streaming
+            commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+            os.system(commandline)
+            # Re-Check Streamer is streaming
             res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
             gdata = res.json() # save json
             if gdata['success'] == True:
@@ -146,21 +134,10 @@ if __name__ == "__main__":
     quality_enable = 0 # If 0, automatically best
     quality = 'best'
     mvtarget = "../record/"+username
-    fix = 0
 
     # Do not fix this
-    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget, "fix": fix}
+    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget}
 
-    if fix == 1:
-        nul = 0
-    elif fix == 0:
-        nul = 0
-    else:
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown fix')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
-        time.sleep(5)
-        exit()
 
     if IsConfigFileEnabled == True:
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Reading Config File')
@@ -199,18 +176,6 @@ if __name__ == "__main__":
             nul = 0
         else:
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown mvtaget_enable')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
-            time.sleep(5)
-            exit()
-
-
-        if f["fix"] == 1:
-            data['fix'] = 1
-        elif f['fix'] == 0:
-            data['fix'] = 0
-        else:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown fix')
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
             time.sleep(5)

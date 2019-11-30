@@ -5,6 +5,5 @@
     "quality": "best",
     "mvtarget_enable": 0,
     "mvtarget": "../Video",
-    "sleeptime": 180,
-    "fix": 0
+    "sleeptime": 180
 }
