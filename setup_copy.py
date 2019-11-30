@@ -1,3 +1,4 @@
+import json
 import shutil
 import os
 import platform
@@ -6,18 +7,11 @@ import time
 
 if __name__ == "__main__":
     # Check JSON File
-    if os.path.isfile('./setup_config.json'):
-        if os.path.isfile('./config.json'):
-            os.remove('./setup_config.json')
-        else:
-            shutil.move("setup_config.json", "config.json")
-    elif os.path.isfile('./config.json'):
-        nul = 0
-    else:
-        print('ERROR: No setup_config.json or config.json')
-        print('ERROR: Program will be exit in 5 secounds')
-        time.sleep(5)
-        exit()
+    f = open('config.json', 'w')
+    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180}
+    json.dump(conf_js, f, indent="\t")
+    f.write
+    f.close
 
     # Check setup_username.py
     if os.path.isfile('./setup_username.py'):
@@ -81,7 +75,6 @@ if __name__ == "__main__":
                         question = int(input('[1, 2]: '))
                         if question == 1:
                             pm2file = './start_pm2.sh'
-                            os.system('touch '+pm2file)
                             f = open(pm2file, 'a')
                             f.write('cd '+now+'\n')
                             f.close
@@ -89,7 +82,6 @@ if __name__ == "__main__":
                             break
                         elif question == 2:
                             pm2file = '../start_pm2.sh'
-                            os.system('touch '+pm2file)
                             f = open(pm2file, 'a')
                             f.write('cd '+now+'\n')
                             f.close
