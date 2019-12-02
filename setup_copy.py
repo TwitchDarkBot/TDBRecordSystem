@@ -149,14 +149,27 @@ if __name__ == "__main__":
                 print('ffmpeg installation finished.')
                 ffmpeg = 'ffmpeg'
             elif lin == 2:
-                if os.getenv("git") == 'None':
-                    command = "sudo yum -y install git"
-                    os.system(command)
                 if os.getenv("make") == 'None':
                     command = "sudo yum -y groupinstall 'Development Tools'"
                     os.system(command)
-                command = "git clone https://github.com/FFmpeg/FFmpeg.git"
+                url = "http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2"
+                f = open("ffmpeg.tar.bz2", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close()
+                f = open("setup_ffmpeg.sh","w")
+                f.write("tar xjvf ffmpeg-snapshot.tar.bz2\n")
+                f.write("cd ffmpeg\n")
+                f.write("./configure --disable-x86asm\n")
+                f.write("make\n")
+                f.write("make install\n")
+                f.write("make distclean\n")
+                f.write("cd ..\n")
+                f.write("rm -rf ffmpeg/\n")
+                f.close()
+                command = "setup_ffmpeg.sh"
                 os.system(command)
+
         else:
             ffmpeg = 'ffmpeg'
 
