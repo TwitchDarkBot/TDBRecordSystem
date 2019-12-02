@@ -76,40 +76,87 @@ if __name__ == "__main__":
             q = 'y'
             q = input("(Default Y[Y,n]): ")
             if q == 'y':
-                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
-                f = open("ffmpeg.exe", "wb")
-                res = get(url)
-                f.write(res.content)
-                f.close()
-                ffmpeg = "./ffmpeg.exe"
+                while True:
+                    print("INFO: Select your linux build")
+                    print("[1] Debian, Ubuntu")
+                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
+                    q = 'no'
+                    q = int(input("[1, 2]: "))
+                    if q == 1:
+                        lin = 1
+                        break
+                    elif q == 2:
+                        lin = 2
+                        break
+                    else:
+                        nul = 0
             elif q == 'Y':
-                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
-                f = open("ffmpeg.exe", "wb")
-                res = get(url)
-                f.write(res.content)
-                f.close()
-                ffmpeg = "./ffmpeg.exe"
+                while True:
+                    print("INFO: Select your linux build")
+                    print("[1] Debian, Ubuntu")
+                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
+                    q = 'no'
+                    q = int(input("[1, 2]: "))
+                    if q == 1:
+                        lin = 1
+                        break
+                    elif q == 2:
+                        lin = 2
+                        break
+                    else:
+                        nul = 0
             elif q == 'yes':
-                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
-                f = open("ffmpeg.exe", "wb")
-                res = get(url)
-                f.write(res.content)
-                f.close()
-                ffmpeg = "./ffmpeg.exe"
+                while True:
+                    print("INFO: Select your linux build")
+                    print("[1] Debian, Ubuntu")
+                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
+                    q = 'no'
+                    q = int(input("[1, 2]: "))
+                    if q == 1:
+                        lin = 1
+                        break
+                    elif q == 2:
+                        lin = 2
+                        break
+                    else:
+                        nul = 0
             elif q == 'Yes':
-                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
-                f = open("ffmpeg.exe", "wb")
-                res = get(url)
-                f.write(res.content)
-                f.close()
-                ffmpeg = "./ffmpeg.exe"
+                while True:
+                    print("INFO: Select your linux build")
+                    print("[1] Debian, Ubuntu")
+                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
+                    q = 'no'
+                    q = int(input("[1, 2]: "))
+                    if q == 1:
+                        lin = 1
+                        break
+                    elif q == 2:
+                        lin = 2
+                        break
+                    else:
+                        nul = 0
             else:
                 print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
                 print('ERROR: Exit in 5 secounds')
                 time.sleep(5)
                 exit()
 
-            
+            if lin == 1:
+                command = "sudo apt-get update"
+                os.system(command)
+                command = "sudo apt-get install ffmpeg -y"
+                os.system(command)
+                print('ffmpeg installation finished.')
+                ffmpeg = 'ffmpeg'
+            elif lin == 2:
+                if os.getenv("git") == 'None':
+                    command = "sudo yum -y install git"
+                    os.system(command)
+                if os.getenv("make") == 'None':
+                    command = "sudo yum -y groupinstall 'Development Tools'"
+                    os.system(command)
+                command = "git clone https://github.com/FFmpeg/FFmpeg.git"
+                os.system(command)
         else:
             ffmpeg = 'ffmpeg'
 
