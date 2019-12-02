@@ -4,6 +4,7 @@ import os
 import platform
 import sys
 import time
+from requests import get
 
 if __name__ == "__main__":
     # Check setup_username.py
@@ -35,13 +36,33 @@ if __name__ == "__main__":
                 q = input('(Default Y [Y, n]): ')
 
                 if q == 'y':
-                    # Download script
+                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    f = open("ffmpeg.exe", "wb")
+                    res = get(url)
+                    f.write(res.content)
+                    f.close()
+                    ffmpeg = "./ffmpeg.exe"
                 elif q == 'Y':
-                    # Download script
+                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    f = open("ffmpeg.exe", "wb")
+                    res = get(url)
+                    f.write(res.content)
+                    f.close()
+                    ffmpeg = "./ffmpeg.exe"
                 elif q == 'yes':
-                    # Download script
+                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    f = open("ffmpeg.exe", "wb")
+                    res = get(url)
+                    f.write(res.content)
+                    f.close()
+                    ffmpeg = "./ffmpeg.exe"
                 elif q == 'Yes':
-                    # Download script
+                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    f = open("ffmpeg.exe", "wb")
+                    res = get(url)
+                    f.write(res.content)
+                    f.close()
+                    ffmpeg = "./ffmpeg.exe"
                 else:
                     print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
                     print('ERROR: Exit in 5 secounds')
@@ -52,6 +73,41 @@ if __name__ == "__main__":
     elif plat == 'Linux':
         if os.getenv('ffmpeg') == 'None':
             print('WARN: Cannot find ffmpeg. Do you want to install it?')
+            q = 'y'
+            q = input("(Default Y[Y,n]): ")
+            if q == 'y':
+                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close()
+                ffmpeg = "./ffmpeg.exe"
+            elif q == 'Y':
+                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close()
+                ffmpeg = "./ffmpeg.exe"
+            elif q == 'yes':
+                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close()
+                ffmpeg = "./ffmpeg.exe"
+            elif q == 'Yes':
+                url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close()
+                ffmpeg = "./ffmpeg.exe"
+            else:
+                print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
+                print('ERROR: Exit in 5 secounds')
+                time.sleep(5)
+                exit()
 
             
         else:
@@ -59,7 +115,7 @@ if __name__ == "__main__":
 
     # Check JSON File
     f = open('config.json', 'w')
-    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180}
+    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180, "ffmpeg": ffmpeg}
     json.dump(conf_js, f, indent="\t")
     f.write
     f.close
@@ -135,7 +191,7 @@ if __name__ == "__main__":
                 shmake = 0
                 break
             else:
-                print('WARN: Please wrute down 1, 2')
+                print('WARN: Please write down 1, 2')
 
     print('INFO: To exit, type exit')
     while True:
