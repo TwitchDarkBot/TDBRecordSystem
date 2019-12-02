@@ -169,7 +169,6 @@ if __name__ == "__main__":
                 f.close()
                 command = "setup_ffmpeg.sh"
                 os.system(command)
-
         else:
             ffmpeg = 'ffmpeg'
 
