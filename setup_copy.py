@@ -6,13 +6,6 @@ import sys
 import time
 
 if __name__ == "__main__":
-    # Check JSON File
-    f = open('config.json', 'w')
-    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180}
-    json.dump(conf_js, f, indent="\t")
-    f.write
-    f.close
-
     # Check setup_username.py
     if os.path.isfile('./setup_username.py'):
         nul = 0
@@ -31,11 +24,11 @@ if __name__ == "__main__":
     if plat == 'windows':
         if os.getenv('ffmpeg') == 'None':
             if os.path.isfile('./ffmpeg.exe'):
-                nul = 0
+                ffmpeg = './ffmpeg.exe'
             elif os.path.isfile('../ffmpeg.exe'):
-                nul = 0
+                ffmpeg = './ffmpeg.exe'
             elif os.path.isfile('./bin/ffmpeg.exe'):
-                nul = 0
+                ffmpeg = './bin/ffmpeg.exe'
             else:
                 print('WARN: Cannot find ffmpeg. Do you want to download it?')
                 q = 'y'
@@ -55,12 +48,21 @@ if __name__ == "__main__":
                     time.sleep(5)
                     exit()
         else:
-            nul = 0
+            ffmpeg = 'ffmpeg'
     elif plat == 'Linux':
         if os.getenv('ffmpeg') == 'None':
             print('WARN: Cannot find ffmpeg. Do you want to install it?')
+
+            
         else:
-            nul = 0
+            ffmpeg = 'ffmpeg'
+
+    # Check JSON File
+    f = open('config.json', 'w')
+    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180}
+    json.dump(conf_js, f, indent="\t")
+    f.write
+    f.close
 
 
     #pm2
