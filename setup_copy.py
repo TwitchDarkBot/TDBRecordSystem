@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     # Check JSON File
     f = open('config.json', 'w')
-    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180, "ffmpeg": ffmpeg}
+    conf_js = {"username_enable": 0, "username": "streamer", "quality_enable": 0, "quality": "best", "mvtarget_enable": 0, "mvtarget": "../Video", "sleeptime": 180}
     json.dump(conf_js, f, indent="\t")
     f.write
     f.close
