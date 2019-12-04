@@ -26,8 +26,6 @@ if __name__ == "__main__":
         if os.getenv('ffmpeg') == 'None':
             if os.path.isfile('./ffmpeg.exe'):
                 ffmpeg = './ffmpeg.exe'
-            elif os.path.isfile('../ffmpeg.exe'):
-                ffmpeg = './ffmpeg.exe'
             elif os.path.isfile('./bin/ffmpeg.exe'):
                 ffmpeg = './bin/ffmpeg.exe'
             else:
@@ -76,71 +74,41 @@ if __name__ == "__main__":
             q = 'y'
             q = input("(Default Y[Y,n]): ")
             if q == 'y':
-                while True:
-                    print("INFO: Select your linux build")
-                    print("[1] Debian, Ubuntu")
-                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
-                    q = 'no'
-                    q = int(input("[1, 2]: "))
-                    if q == 1:
-                        lin = 1
-                        break
-                    elif q == 2:
-                        lin = 2
-                        break
-                    else:
-                        nul = 0
+                linff = 1
             elif q == 'Y':
-                while True:
-                    print("INFO: Select your linux build")
-                    print("[1] Debian, Ubuntu")
-                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
-                    q = 'no'
-                    q = int(input("[1, 2]: "))
-                    if q == 1:
-                        lin = 1
-                        break
-                    elif q == 2:
-                        lin = 2
-                        break
-                    else:
-                        nul = 0
+                linff = 1
             elif q == 'yes':
-                while True:
-                    print("INFO: Select your linux build")
-                    print("[1] Debian, Ubuntu")
-                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
-                    q = 'no'
-                    q = int(input("[1, 2]: "))
-                    if q == 1:
-                        lin = 1
-                        break
-                    elif q == 2:
-                        lin = 2
-                        break
-                    else:
-                        nul = 0
+                linff = 1
             elif q == 'Yes':
-                while True:
-                    print("INFO: Select your linux build")
-                    print("[1] Debian, Ubuntu")
-                    print("[2] RHEL(Redhat, Oracle linux, Centos)")
-                    q = 'no'
-                    q = int(input("[1, 2]: "))
-                    if q == 1:
-                        lin = 1
-                        break
-                    elif q == 2:
-                        lin = 2
-                        break
-                    else:
-                        nul = 0
+                linff = 1
             else:
                 print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
                 print('ERROR: Exit in 5 secounds')
                 time.sleep(5)
                 exit()
-
+            if  linff == 1:
+                if "debian" in platform.platform():
+                    lin = 1
+                elif "ubuntu" in platform.platform():
+                    lin = 1
+                elif "CentOS" in platform.platform():
+                    lin = 2
+                elif "redhat" in platform.platform():
+                    lin = 2
+                elif "oracle" in platform.platform():
+                    lin = 2
+                else:
+                    while True:
+                        print("INFO: Select your linux build")
+                        print("[1] Debian, Ubuntu (which uses apt-get)")
+                        print("[2] RHEL(Redhat, Oracle linux, Centos) (which uses yum)")
+                        q = int(input("[1, 2]: "))
+                        if q == 1:
+                            lin = 1
+                            break
+                        elif q == 2:
+                            lin = 2
+                            break
             if lin == 1:
                 command = "sudo apt-get update"
                 os.system(command)

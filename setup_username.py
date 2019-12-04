@@ -135,9 +135,18 @@ if __name__ == "__main__":
     quality_enable = 0 # If 0, automatically best
     quality = 'best'
     mvtarget = "../record/"+username
+    ffmpeg = "ffmpeg"
+    if platform.system() == 'windows':
+        if os.getenv('ffmpeg') == 'None':
+            if os.path.isfile('./ffmpeg.exe'):
+                ffmpeg = './ffmpeg.exe'
+            elif os.path.isfile('./bin/ffmpeg.exe'):
+                ffmpeg = './bin/ffmpeg.exe'
+        else:
+            ffmpeg = "ffmpeg"
 
     # Do not fix this
-    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget}
+    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget, "ffmpeg": "ffmpeg"}
 
 
     if IsConfigFileEnabled == True:
@@ -145,6 +154,7 @@ if __name__ == "__main__":
         fl = open(ConfigFile,'r')
         f = json.load(fl)
         data['sleeptime'] = f['sleeptime']
+        data['ffmpeg'] = f['ffmpeg']
         if f['username_enable'] == 1:
             data['username'] = f['username']
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+f['username'])
