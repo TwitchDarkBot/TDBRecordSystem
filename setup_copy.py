@@ -109,6 +109,8 @@ if __name__ == "__main__":
                         elif q == 2:
                             lin = 2
                             break
+                        else:
+                            print('WARN: Please write down 1, 2')
             if lin == 1:
                 command = "sudo apt-get update"
                 os.system(command)
