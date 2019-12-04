@@ -205,6 +205,19 @@ if __name__ == "__main__":
     if plat == 'Windows':
         print('WARN: Windows cannot use pm2. SKIP.')
     elif plat == 'Linux':
+        if os.path.isfile('./start_pm2.sh'):
+            pm2file = './start_pm2.sh'
+            search = 1
+        elif os.path.isfile('../start_pm2.sh'):
+            if upperperm == 1:
+                pm2file = '../start_pm2.sh'
+                search = 1
+            else:
+                search = 0
+        else:
+            search = 0
+            makepm2 = 1
+
         while True:
             print('INFO: [1] Use PM2')
             print('INFO: [2] Just copy file')
@@ -212,18 +225,6 @@ if __name__ == "__main__":
             if mksh == 1:
                 pm2a = 0
                 shmake = 1
-                if os.path.isfile('./start_pm2.sh'):
-                    pm2file = './start_pm2.sh'
-                    search = 1
-                elif os.path.isfile('../start_pm2.sh'):
-                    if upperperm == 1:
-                        pm2file = '../start_pm2.sh'
-                        search = 1
-                    else:
-                        search = 0
-                else:
-                    search = 0
-                    makepm2 = 1
 
                 if search == 1:
                     while True:
@@ -278,43 +279,65 @@ if __name__ == "__main__":
                     break
             elif mksh == 2:
                 shmake = 0
+                if search == 1:
+                    os.remove(pm2file)
                 break
             else:
                 print('WARN: Please write down 1, 2')
-
+    oad = 0
     print('INFO: To exit, type exit')
     while True:
         streamer = input('STREAMER NAME: ')
         if streamer == 'exit':
             if shmake == 1:
-                f = open(pm2file, 'a')
-                f.write('exit')
-                f.close
-                print('INFO: Closing File OK')
-            os.system('chmod 775 '+pm2file)
+                if oad == 1:
+                    f.close
+                    print('WARN: Nothing added.')
+                    print('WARN: Removing the file'+pm2file)
+                    os.remove(pm2file)
+                else:
+                    f = open(pm2file, 'a')
+                    f.write('exit')
+                    f.close
+                    print('INFO: Closing File OK')
+                    os.system('chmod 775 '+pm2file)
             print('INFO: EXIT OK')
             exit()
         elif '!' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '@' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '#' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '$' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '%' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '^' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '&' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '*' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif '(' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         elif ')' in streamer:
-            print("You cannot use this username")
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
+        elif ' ' in streamer:
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
         else:
+            oad = 1
             shutil.copy("setup_username.py", streamer+'.py')
             print('INFO: COPY '+streamer+' OK')
             if shmake == 1:
