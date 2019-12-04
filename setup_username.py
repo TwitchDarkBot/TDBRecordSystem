@@ -112,11 +112,6 @@ def main(data, cont):
         elif cont == True:
             cont = True
 
-
-
-# ===================================================== MAIN
-
-
 if __name__ == "__main__":
     # do not touch this
     data = ''
@@ -124,8 +119,7 @@ if __name__ == "__main__":
     p = compile("{}.py")
     result = p.parse(os.path.basename(__file__))
     username = result[0]
-    # fix this
-
+    # ============================== fix =================================
     # if you use config.json, change True
     IsConfigFileEnabled = True
     ConfigFile = "config.json"
@@ -135,6 +129,8 @@ if __name__ == "__main__":
     quality_enable = 0 # If 0, automatically best
     quality = 'best'
     mvtarget = "../record/"+username
+
+    # =========================== fix end =================================
     ffmpeg = "ffmpeg"
     if platform.system() == 'windows':
         if os.getenv('ffmpeg') == 'None':

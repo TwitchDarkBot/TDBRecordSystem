@@ -25,6 +25,7 @@ echo Installing requirements.txt
 echo.
 python -m pip install -U requests parse
 echo.
+echo running setup
 python3 setup_copy.py
 pause
 exit
