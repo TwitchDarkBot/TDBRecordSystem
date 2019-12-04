@@ -314,8 +314,6 @@ if __name__ == "__main__":
             print("You cannot use this username")
         elif ')' in streamer:
             print("You cannot use this username")
-        elif '\' in streamer:
-            print("You cannot use this username")
         else:
             shutil.copy("setup_username.py", streamer+'.py')
             print('INFO: COPY '+streamer+' OK')
