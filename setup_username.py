@@ -88,7 +88,7 @@ def main(data, cont):
             # parsing end
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
             fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-            commandline = "ffmpeg -err_detect ignore_err -i '"+m3u8id+"' -c copy "+fhname+".mp4"
+            commandline = ffmpeg+"-err_detect ignore_err -i '"+m3u8id+"' -c copy "+fhname+".mp4"
             #subprocess.run([commandline])
             os.system(commandline) # streamlink start
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
@@ -154,7 +154,6 @@ if __name__ == "__main__":
         fl = open(ConfigFile,'r')
         f = json.load(fl)
         data['sleeptime'] = f['sleeptime']
-        data['ffmpeg'] = f['ffmpeg']
         if f['username_enable'] == 1:
             data['username'] = f['username']
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+f['username'])
