@@ -294,10 +294,33 @@ if __name__ == "__main__":
             os.system('chmod 775 '+pm2file)
             print('INFO: EXIT OK')
             exit()
-        shutil.copy("setup_username.py", streamer+'.py')
-        print('INFO: COPY '+streamer+' OK')
-        if shmake == 1:
-            f = open(pm2file, 'a')
-            f.write('pm2 start -x --interpreter /bin/python3 '+streamer+'.py\n')
-            print('INFO: PM2 Write OK')
-            f.close
+        elif '!' in streamer:
+            print("You cannot use this username")
+        elif '@' in streamer:
+            print("You cannot use this username")
+        elif '#' in streamer:
+            print("You cannot use this username")
+        elif '$' in streamer:
+            print("You cannot use this username")
+        elif '%' in streamer:
+            print("You cannot use this username")
+        elif '^' in streamer:
+            print("You cannot use this username")
+        elif '&' in streamer:
+            print("You cannot use this username")
+        elif '*' in streamer:
+            print("You cannot use this username")
+        elif '(' in streamer:
+            print("You cannot use this username")
+        elif ')' in streamer:
+            print("You cannot use this username")
+        elif '\' in streamer:
+            print("You cannot use this username")
+        else:
+            shutil.copy("setup_username.py", streamer+'.py')
+            print('INFO: COPY '+streamer+' OK')
+            if shmake == 1:
+                f = open(pm2file, 'a')
+                f.write('pm2 start -x --interpreter /bin/python3 '+streamer+'.py\n')
+                print('INFO: PM2 Write OK')
+                f.close
