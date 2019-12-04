@@ -5,16 +5,67 @@ import platform
 import sys
 import time
 from requests import get
+import string
+import random
 
 if __name__ == "__main__":
+
+    # check can i write the file
+    rd = ''
+    lng = 1024
+    string_pool = string.ascii_letters + string.digits
+
+    for i in range(lng): 
+        rd += random.choice(string_pool)
+    
+    f = open("firewrite", "w")
+    f.write(rd)
+    f.close
+    f = open("firewrite", "r")
+    readed = f.read()
+    f.close
+    os.remove("firewrite")
+    if rd == readed:
+        nul = 0
+    else:
+        print("ERROR: No Permission. Please grant permission on this directory")
+        print('ERROR: Exit in 5 secounds')
+        time.sleep(5)
+        exit()
+    
+    # Check permission upper directory
+
+    rd = ''
+    lng = 1024
+    string_pool = string.ascii_letters + string.digits
+
+    for i in range(lng): 
+        rd += random.choice(string_pool)
+    
+    f = open("../firewrite", "w")
+    f.write(rd)
+    f.close
+    f = open("../firewrite", "r")
+    readed = f.read()
+    f.close
+    os.remove("../firewrite")
+    if rd == readed:
+        upperperm = 1
+    else:
+        print("WARN: No Permission on upper directory.")
+        upperperm = 0
+
     # Check setup_username.py
     if os.path.isfile('./setup_username.py'):
         nul = 0
     else:
-        print('ERROR: No setup_username.py')
-        print('ERROR: Program will be exit in 5 secounds')
-        time.sleep(5)
-        exit()
+        print('WARN: No setup_username.py')
+        print('INFO: Downloading setup_username.py')
+        url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/m3u8downloader/setup_username.py"
+        f = open("setup_username.py", "wb")
+        res = get(url)
+        f.write(res.content)
+        f.close
         
     shmake = 0
     makepm2 = 0
@@ -38,28 +89,28 @@ if __name__ == "__main__":
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
-                    f.close()
+                    f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'Y':
                     url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
-                    f.close()
+                    f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'yes':
                     url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
-                    f.close()
+                    f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'Yes':
                     url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
-                    f.close()
+                    f.close
                     ffmpeg = "./ffmpeg.exe"
                 else:
                     print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
@@ -126,7 +177,7 @@ if __name__ == "__main__":
                 f = open("ffmpeg.tar.bz2", "wb")
                 res = get(url)
                 f.write(res.content)
-                f.close()
+                f.close
                 f = open("setup_ffmpeg.sh","w")
                 f.write("tar xjvf ffmpeg-snapshot.tar.bz2\n")
                 f.write("cd ffmpeg\n")
@@ -136,7 +187,7 @@ if __name__ == "__main__":
                 f.write("make distclean\n")
                 f.write("cd ..\n")
                 f.write("rm -rf ffmpeg/\n")
-                f.close()
+                f.close
                 command = "setup_ffmpeg.sh"
                 os.system(command)
         else:
@@ -165,8 +216,11 @@ if __name__ == "__main__":
                     pm2file = './start_pm2.sh'
                     search = 1
                 elif os.path.isfile('../start_pm2.sh'):
-                    pm2file = '../start_pm2.sh'
-                    search = 1
+                    if upperperm == 1:
+                        pm2file = '../start_pm2.sh'
+                        search = 1
+                    else:
+                        search = 0
                 else:
                     search = 0
                     makepm2 = 1
@@ -177,7 +231,7 @@ if __name__ == "__main__":
                         print('INFO: [2] Fix previous file')
                         question = int(input('[1, 2]: '))
                         if question == 1:
-                            os.system('rm '+pm2file)
+                            os.remove(pm2file)
                             search = 0
                             makepm2 = 1
                             question = ''
@@ -186,10 +240,10 @@ if __name__ == "__main__":
                             pm2a = 1
                             f = open(pm2file,'r')
                             lines = f.readlines()
-                            f.close()
+                            f.close
                             f = open(pm2file,'w')
                             f.writelines([item for item in lines[:-1]])
-                            f.close()
+                            f.close
                             break
                         else:
                             print('WARN: Please write down 1, 2')
@@ -206,11 +260,17 @@ if __name__ == "__main__":
                             pm2a = 1
                             break
                         elif question == 2:
-                            pm2file = '../start_pm2.sh'
-                            f = open(pm2file, 'a')
-                            f.write('cd '+now+'\n')
-                            f.close
-                            pm2a = 1
+                            if upperperm == 1:
+                                pm2file = '../start_pm2.sh'
+                                f = open(pm2file, 'a')
+                                f.write('cd '+now+'\n')
+                                f.close
+                                pm2a = 1
+                            else:
+                                print("ERROR: No Permission. Please grant permission upper directory")
+                                print('ERROR: Exit in 5 secounds')
+                                time.sleep(5)
+                                exit()
                             break
                         else:
                             print('WARN: Please write down 1, 2')
