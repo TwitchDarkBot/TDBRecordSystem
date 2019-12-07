@@ -88,7 +88,7 @@ def main(data, cont):
             # parsing end
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
             fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-            commandline = ffmpeg+"-err_detect ignore_err -i '"+m3u8id+"' -c copy "+fhname+".mp4"
+            commandline = ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4'
             #subprocess.run([commandline])
             os.system(commandline) # streamlink start
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     # =========================== fix end =================================
     ffmpeg = "ffmpeg"
-    if platform.system() == 'windows':
+    if platform.system() == 'Windows':
         if os.getenv('ffmpeg') == 'None':
             if os.path.isfile('./ffmpeg.exe'):
                 ffmpeg = './ffmpeg.exe'
@@ -189,6 +189,6 @@ if __name__ == "__main__":
 
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
-    cont = 0
+    cont = False
     main(data, cont)
 
