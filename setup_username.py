@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # =========================== fix end =================================
     ffmpeg = "ffmpeg"
     if platform.system() == 'Windows':
-        if os.getenv('ffmpeg') == 'None':
+        if os.getenv('ffmpeg') == None:
             if os.path.isfile('./ffmpeg.exe'):
                 ffmpeg = 'ffmpeg.exe'
             elif os.path.isfile('./bin/ffmpeg.exe'):
