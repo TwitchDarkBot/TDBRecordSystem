@@ -9,7 +9,16 @@ import string
 import random
 
 if __name__ == "__main__":
-
+    if platform.system() == 'Windows':
+        nul = 0
+    elif platform.system() == 'Linux':
+        nul = 0
+    else:
+        print('ERROR: You cannot use this program on '+platform.system()+'.')
+        print('ERROR: Program will exit in 5 secounds')
+        time.sleep(5)
+        exit()
+        
     # check can i write the file
     rd = ''
     lng = 1024

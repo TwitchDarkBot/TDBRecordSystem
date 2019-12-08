@@ -15,20 +15,19 @@ def main(data, cont):
         res = ''
         m3u8id = ''
         quality = ''
-        if cont == False:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
-            # TDB sync
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
+        # TDB sync
 
-            # TDB SYNC IS NOT READY.
+        # TDB SYNC IS NOT READY.
 
-            # TDB sync end
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
-            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-            gdata = res.json() # save json
+        # TDB sync end
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
+        res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+        gdata = res.json() # save json
         if gdata["success"] == True: # If streamer is streaming
-            if cont == False:
-                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
+            
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # json parsing
             if data['quality_enable'] == 1:
                 if data['quality'] in gdata['urls']:
@@ -86,33 +85,40 @@ def main(data, cont):
                     quality = '160p'
             
             # parsing end
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
-            fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-            commandline = ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4'
-            #subprocess.run([commandline])
-            os.system(commandline) # streamlink start
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
-            commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-            os.system(commandline)
-            # Re-Check Streamer is streaming
-            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-            gdata = res.json() # save json
-            if gdata['success'] == True:
-                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
-                cont = True
-            else:
-                cont = False
-
+            while True:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
+                fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
+                commandline = ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4'
+                #subprocess.run([commandline])
+                os.system(commandline) # streamlink start
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
+                if platform.system() == 'Windows':
+                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+                elif platform.system() == 'Linux':
+                    commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+                os.system(commandline)
+                # Re-Check Streamer is streaming
+                res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+                gdata = res.json() # save json
+                if gdata['success'] == True:
+                    print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
+                else:
+                    break
         else: # Streamer is not streaming
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+' is not streaming')
-            cont = False
-        if cont == False:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
-            time.sleep(data["sleeptime"])
-        elif cont == True:
-            cont = True
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
+        time.sleep(data["sleeptime"])
 
 if __name__ == "__main__":
+    if platform.system() == 'Windows':
+        nul = 0
+    elif platform.system() == 'Linux':
+        nul = 0
+    else:
+        print('ERROR: You cannot use this program on '+platform.system()+'.')
+        print('ERROR: Program will exit in 5 secounds')
+        time.sleep(5)
+        exit()
     # do not touch this
     data = ''
     m3u8get = "https://pwn.sh/tools/streamapi.py"
