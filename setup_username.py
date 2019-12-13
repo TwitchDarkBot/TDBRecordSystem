@@ -4,6 +4,7 @@ import os
 import time
 from parse import compile
 import subprocess
+import platform
 
 def main(data, cont):
     # Repeat while KeyboardInterrupt
@@ -14,20 +15,19 @@ def main(data, cont):
         res = ''
         m3u8id = ''
         quality = ''
-        if cont == False:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
-            # TDB sync
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
+        # TDB sync
 
-            # TDB SYNC IS NOT READY.
+        # TDB SYNC IS NOT READY.
 
-            # TDB sync end
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
-            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-            gdata = res.json() # save json
+        # TDB sync end
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
+        res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+        gdata = res.json() # save json
         if gdata["success"] == True: # If streamer is streaming
-            if cont == False:
-                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
+            
+            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # json parsing
             if data['quality_enable'] == 1:
                 if data['quality'] in gdata['urls']:
@@ -85,58 +85,47 @@ def main(data, cont):
                     quality = '160p'
             
             # parsing end
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
-            fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-            commandline = "streamlink "+m3u8id+" best -o '"+fhname+"-recording.mp4'"
-            #subprocess.run([commandline])
-            os.system(commandline) # streamlink start
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
-            if data['fix'] == 1: # If fix is true
-                commandline = "ffmpeg -err_detect ignore_err -i "+fhname+"-recording.mp4 -c copy ./"+fhname+".mp4"
+            while True:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
+                fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
+                commandline = ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4'
                 #subprocess.run([commandline])
+                os.system(commandline) # streamlink start
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
+                if platform.system() == 'Windows':
+                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+                elif platform.system() == 'Linux':
+                    commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 os.system(commandline)
-                os.remove(fhname+'recording.mp4')
-                commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                #subprocess.run([commandline])
-                os.system(commandline)
-
-            elif data['fix'] == 0:
-                commandline = "mv "+fhname+"-recording.mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                #subprocess.run([commandline])
-                os.system(commandline)
-            
-            # Check Streamer is streaming
-            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-            gdata = res.json() # save json
-            if gdata['success'] == True:
-                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
-                cont = True
-            else:
-                cont = False
-
+                # Re-Check Streamer is streaming
+                res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+                gdata = res.json() # save json
+                if gdata['success'] == True:
+                    print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
+                else:
+                    break
         else: # Streamer is not streaming
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+' is not streaming')
-            cont = False
-        if cont == False:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
-            time.sleep(data["sleeptime"])
-        elif cont == True:
-            cont = True
-
-
-
-# ===================================================== MAIN
-
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
+        time.sleep(data["sleeptime"])
 
 if __name__ == "__main__":
+    if platform.system() == 'Windows':
+        nul = 0
+    elif platform.system() == 'Linux':
+        nul = 0
+    else:
+        print('ERROR: You cannot use this program on '+platform.system()+'.')
+        print('ERROR: Program will exit in 5 secounds')
+        time.sleep(5)
+        exit()
     # do not touch this
     data = ''
     m3u8get = "https://pwn.sh/tools/streamapi.py"
     p = compile("{}.py")
     result = p.parse(os.path.basename(__file__))
     username = result[0]
-    # fix this
-
+    # ============================== fix =================================
     # if you use config.json, change True
     IsConfigFileEnabled = True
     ConfigFile = "config.json"
@@ -146,21 +135,21 @@ if __name__ == "__main__":
     quality_enable = 0 # If 0, automatically best
     quality = 'best'
     mvtarget = "../record/"+username
-    fix = 0
+
+    # =========================== fix end =================================
+    ffmpeg = "ffmpeg"
+    if platform.system() == 'Windows':
+        if os.getenv('ffmpeg') == None:
+            if os.path.isfile('./ffmpeg.exe'):
+                ffmpeg = 'ffmpeg.exe'
+            elif os.path.isfile('./bin/ffmpeg.exe'):
+                ffmpeg = 'bin\\ffmpeg.exe'
+        else:
+            ffmpeg = "ffmpeg"
 
     # Do not fix this
-    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget, "fix": fix}
+    data = {"m3u8get": m3u8get, "username": username, "sleeptime": sleeptime, "quality_enable": quality_enable, "quality": quality, "mvtarget": mvtarget, "ffmpeg": "ffmpeg"}
 
-    if fix == 1:
-        nul = 0
-    elif fix == 0:
-        nul = 0
-    else:
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown fix')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
-        time.sleep(5)
-        exit()
 
     if IsConfigFileEnabled == True:
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Reading Config File')
@@ -204,20 +193,8 @@ if __name__ == "__main__":
             time.sleep(5)
             exit()
 
-
-        if f["fix"] == 1:
-            data['fix'] = 1
-        elif f['fix'] == 0:
-            data['fix'] = 0
-        else:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown fix')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
-            time.sleep(5)
-            exit()
-
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
-    cont = 0
+    cont = False
     main(data, cont)
 

@@ -23,9 +23,9 @@ python -m pip install -U pip
 echo.
 echo Installing requirements.txt
 echo.
-python -m pip install -U requests parse streamlink
+python -m pip install -U requests parse
 echo.
-echo Setup complete!
-echo You have to restart the computer.
+echo running setup
+python3 setup_copy.py
 pause
 exit
