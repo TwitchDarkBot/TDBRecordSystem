@@ -19,7 +19,7 @@ def main(data, cont):
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
         # TDB sync
 
-        # TDB SYNC IS NOT READY.
+        
 
         # TDB sync end
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
