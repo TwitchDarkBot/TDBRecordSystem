@@ -70,7 +70,7 @@ if __name__ == "__main__":
     else:
         print('WARN: No setup_username.py')
         print('INFO: Downloading setup_username.py')
-        url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/m3u8downloader/setup_username.py"
+        url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/setup_username.py"
         f = open("setup_username.py", "wb")
         res = get(url)
         f.write(res.content)
@@ -94,28 +94,28 @@ if __name__ == "__main__":
                 q = input('(Default Y [Y, n]): ')
 
                 if q == 'y':
-                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
                     f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'Y':
-                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
                     f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'yes':
-                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
                     f.close
                     ffmpeg = "./ffmpeg.exe"
                 elif q == 'Yes':
-                    url = "https://github.com/TwitchDarkBot/TDBRecordSystem/raw/m3u8downloader/bin/ffmpeg.exe"
+                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
                     f = open("ffmpeg.exe", "wb")
                     res = get(url)
                     f.write(res.content)
