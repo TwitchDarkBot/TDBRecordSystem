@@ -140,10 +140,17 @@ if __name__ == "__main__":
     ffmpeg = "ffmpeg"
     if platform.system() == 'Windows':
         if os.getenv('ffmpeg') == None:
-            if os.path.isfile('./ffmpeg.exe'):
+            if os.path.isfile('ffmpeg.exe'):
                 ffmpeg = 'ffmpeg.exe'
-            elif os.path.isfile('./bin/ffmpeg.exe'):
+            elif os.path.isfile('bin/ffmpeg.exe'):
                 ffmpeg = 'bin\\ffmpeg.exe'
+            else:
+                url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = requests.get(url)
+                f.write(res.content)
+                f.close
+                ffmpeg = "ffmpeg.exe"
         else:
             ffmpeg = "ffmpeg"
 
@@ -197,4 +204,3 @@ if __name__ == "__main__":
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
     cont = False
     main(data, cont)
-

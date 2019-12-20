@@ -9,12 +9,13 @@ import string
 import random
 
 if __name__ == "__main__":
-    if platform.system() == 'Windows':
-        nul = 0
-    elif platform.system() == 'Linux':
-        nul = 0
+    plt = platform.system()
+    if plt == 'Windows':
+        plat = 1
+    elif plt == 'Linux':
+        plat = 2
     else:
-        print('ERROR: You cannot use this program on '+platform.system()+'.')
+        print('ERROR: You cannot use this program on '+plt+'.')
         print('ERROR: Program will exit in 5 secounds')
         time.sleep(5)
         exit()
@@ -33,7 +34,6 @@ if __name__ == "__main__":
     f = open("firewrite", "r")
     readed = f.read()
     f.close
-    os.remove("firewrite")
     if rd == readed:
         nul = 0
     else:
@@ -57,12 +57,18 @@ if __name__ == "__main__":
     f = open("../firewrite", "r")
     readed = f.read()
     f.close
-    os.remove("../firewrite")
     if rd == readed:
         upperperm = 1
     else:
         print("WARN: No Permission on upper directory.")
         upperperm = 0
+
+    # Check sudo
+    if plt == 2:
+        if os.getenv('sudo') == None:
+            sudo = 0
+        else:
+            sudo = 1
 
     # Check setup_username.py
     if os.path.isfile('./setup_username.py'):
@@ -79,61 +85,50 @@ if __name__ == "__main__":
     shmake = 0
     makepm2 = 0
     now = os.getcwd()
-    plat = platform.system()
     # ffmpeg scan
 
-    if plat == 'windows':
-        if os.getenv('ffmpeg') == 'None':
+    if plat == 1:
+        if os.getenv('ffmpeg') == None:
             if os.path.isfile('./ffmpeg.exe'):
                 ffmpeg = './ffmpeg.exe'
             elif os.path.isfile('./bin/ffmpeg.exe'):
                 ffmpeg = './bin/ffmpeg.exe'
             else:
                 print('WARN: Cannot find ffmpeg. Do you want to download it?')
-                q = 'y'
-                q = input('(Default Y [Y, n]): ')
-
-                if q == 'y':
-                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
-                    f = open("ffmpeg.exe", "wb")
-                    res = get(url)
-                    f.write(res.content)
-                    f.close
-                    ffmpeg = "./ffmpeg.exe"
+                q = ''
+                q = input('(Default Y [Y,n]): ')
+                if q == '':
+                    nul = 0
+                elif q == 'y':
+                    nul = 0
                 elif q == 'Y':
-                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
-                    f = open("ffmpeg.exe", "wb")
-                    res = get(url)
-                    f.write(res.content)
-                    f.close
-                    ffmpeg = "./ffmpeg.exe"
+                    nul = 0
                 elif q == 'yes':
-                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
-                    f = open("ffmpeg.exe", "wb")
-                    res = get(url)
-                    f.write(res.content)
-                    f.close
-                    ffmpeg = "./ffmpeg.exe"
+                    nul = 0
                 elif q == 'Yes':
-                    url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
-                    f = open("ffmpeg.exe", "wb")
-                    res = get(url)
-                    f.write(res.content)
-                    f.close
-                    ffmpeg = "./ffmpeg.exe"
+                    nul = 0
                 else:
                     print('ERROR: You have to download ffmpeg to use TDBRecordSystem')
                     print('ERROR: Exit in 5 secounds')
                     time.sleep(5)
                     exit()
+                url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
+                print('INFO: Donwloading FFMPEG')
+                f = open("ffmpeg.exe", "wb")
+                res = get(url)
+                f.write(res.content)
+                f.close
+                ffmpeg = "./ffmpeg.exe"
         else:
             ffmpeg = 'ffmpeg'
-    elif plat == 'Linux':
-        if os.getenv('ffmpeg') == 'None':
+    elif plat == 2:
+        if os.getenv('ffmpeg') == None:
             print('WARN: Cannot find ffmpeg. Do you want to install it?')
-            q = 'y'
-            q = input("(Default Y[Y,n]): ")
-            if q == 'y':
+            q = ''
+            q = input("(Default Y [Y,n]): ")
+            if q == '':
+                linff = 1
+            elif q == 'y':
                 linff = 1
             elif q == 'Y':
                 linff = 1
@@ -146,7 +141,7 @@ if __name__ == "__main__":
                 print('ERROR: Exit in 5 secounds')
                 time.sleep(5)
                 exit()
-            if  linff == 1:
+            if linff == 1:
                 if "debian" in platform.platform():
                     lin = 1
                 elif "ubuntu" in platform.platform():
@@ -172,15 +167,24 @@ if __name__ == "__main__":
                         else:
                             print('WARN: Please write down 1, 2')
             if lin == 1:
-                command = "sudo apt-get update"
+                if sudo == 0:
+                    command = "su -c 'apt-get update'"
+                else:
+                    command = "sudo apt-get update"
                 os.system(command)
-                command = "sudo apt-get install ffmpeg -y"
+                if sudo == 0:
+                    command = "su -c 'apt-get install ffmpeg -y'"
+                else:
+                    command = "sudo apt-get install ffmpeg -y"
                 os.system(command)
                 print('ffmpeg installation finished.')
                 ffmpeg = 'ffmpeg'
             elif lin == 2:
-                if os.getenv("make") == 'None':
-                    command = "sudo yum -y groupinstall 'Development Tools'"
+                if os.getenv("make") == None:
+                    if sudo == 0:
+                        command = "su -c '"+'yum -y groupinstall "Development Tools"'+"'"
+                    else:
+                        command = "sudo yum -y groupinstall 'Development Tools'"
                     os.system(command)
                 url = "http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2"
                 f = open("ffmpeg.tar.bz2", "wb")
@@ -197,7 +201,7 @@ if __name__ == "__main__":
                 f.write("cd ..\n")
                 f.write("rm -rf ffmpeg/\n")
                 f.close
-                command = "setup_ffmpeg.sh"
+                command = "./setup_ffmpeg.sh"
                 os.system(command)
         else:
             ffmpeg = 'ffmpeg'
@@ -211,9 +215,9 @@ if __name__ == "__main__":
 
 
     #pm2
-    if plat == 'Windows':
+    if plat == 1:
         print('WARN: Windows cannot use pm2. SKIP.')
-    elif plat == 'Linux':
+    elif plat == 2:
         if os.path.isfile('./start_pm2.sh'):
             pm2file = './start_pm2.sh'
             search = 1
@@ -313,38 +317,27 @@ if __name__ == "__main__":
             print('INFO: EXIT OK')
             exit()
         elif '!' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '@' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '#' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '$' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '%' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '^' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '&' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '*' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif '(' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif ')' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         elif ' ' in streamer:
-            print("WARN: Unknown username:"+streamer)
-            print("WARN: Not added")
+            errorlevel = 1
         else:
             oad = 1
             shutil.copy("setup_username.py", streamer+'.py')
@@ -354,3 +347,7 @@ if __name__ == "__main__":
                 f.write('pm2 start -x --interpreter /bin/python3 '+streamer+'.py\n')
                 print('INFO: PM2 Write OK')
                 f.close
+        if errorlevel == 1:
+            print("WARN: Unknown username:"+streamer)
+            print("WARN: Not added")
+            errorlevel = 0
