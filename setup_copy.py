@@ -304,6 +304,7 @@ if __name__ == "__main__":
     oad = 0
     print('INFO: To exit, type exit')
     while True:
+        errorlevel = 0
         streamer = input('STREAMER NAME: ')
         if streamer == 'exit':
             if shmake == 1:
