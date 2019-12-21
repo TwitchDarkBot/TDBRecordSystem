@@ -34,7 +34,7 @@ if __name__ == "__main__":
     f = open("firewrite", "r")
     readed = f.read()
     f.close
-    if plat == 1:
+    if plat == 2:
         os.remove("firewrite")
     if rd == readed:
         nul = 0
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     f = open("../firewrite", "r")
     readed = f.read()
     f.close
-    if plat == 1:
+    if plat == 2:
         os.remove("../firewrite")
     if rd == readed:
         upperperm = 1
