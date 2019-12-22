@@ -93,7 +93,7 @@ def main(data, cont):
                 os.system(commandline) # streamlink start
                 print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
                 if platform.system() == 'Windows':
-                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"\\"+fhname+".mp4"
                 elif platform.system() == 'Linux':
                     commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 os.system(commandline)
@@ -199,6 +199,12 @@ if __name__ == "__main__":
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
             time.sleep(5)
             exit()
+    
+    if os.path.isdir(mvtarget):
+        nul = 0
+    else:
+        commandline = 'mkdir '+mvtarget
+        os.system(commandline)
 
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
