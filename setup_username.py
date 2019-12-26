@@ -19,7 +19,7 @@ def main(data, cont):
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
         # TDB sync
 
-        
+        # TDB SYNC IS NOT READY.
 
         # TDB sync end
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
@@ -93,7 +93,7 @@ def main(data, cont):
                 os.system(commandline) # streamlink start
                 print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
                 if platform.system() == 'Windows':
-                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
+                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"\\"+fhname+".mp4"
                 elif platform.system() == 'Linux':
                     commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 os.system(commandline)
@@ -140,10 +140,17 @@ if __name__ == "__main__":
     ffmpeg = "ffmpeg"
     if platform.system() == 'Windows':
         if os.getenv('ffmpeg') == None:
-            if os.path.isfile('./ffmpeg.exe'):
+            if os.path.isfile('ffmpeg.exe'):
                 ffmpeg = 'ffmpeg.exe'
-            elif os.path.isfile('./bin/ffmpeg.exe'):
+            elif os.path.isfile('bin/ffmpeg.exe'):
                 ffmpeg = 'bin\\ffmpeg.exe'
+            else:
+                url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
+                f = open("ffmpeg.exe", "wb")
+                res = requests.get(url)
+                f.write(res.content)
+                f.close
+                ffmpeg = "ffmpeg.exe"
         else:
             ffmpeg = "ffmpeg"
 
@@ -192,9 +199,14 @@ if __name__ == "__main__":
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
             time.sleep(5)
             exit()
+    
+    if os.path.isdir(mvtarget):
+        nul = 0
+    else:
+        commandline = 'mkdir '+mvtarget
+        os.system(commandline)
 
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
     cont = False
     main(data, cont)
-
