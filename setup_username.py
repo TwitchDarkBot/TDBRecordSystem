@@ -5,8 +5,14 @@ import time
 from parse import compile
 import subprocess
 import platform
+import tdbclient
+
 
 def main(data, cont):
+    streamer = data["username"]
+    tdblogger = tdbclient.client(streamer)
+    tdblogger.comment = 1
+    tdblogger.send()
     # Repeat while KeyboardInterrupt
     while True:
         # Reset data
@@ -16,12 +22,9 @@ def main(data, cont):
         m3u8id = ''
         quality = ''
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Loading API')
-        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync')
-        # TDB sync
-
-        # TDB SYNC IS NOT READY.
-
-        # TDB sync end
+        print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'TDB Sync mode is AUTO')
+        tdblogger.comment = 2
+        tdblogger.send()
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
         res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
         gdata = res.json() # save json
@@ -30,6 +33,8 @@ def main(data, cont):
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # json parsing
             if data['quality_enable'] == 1:
+                tdblogger.comment = 3
+                tdblogger.send()
                 if data['quality'] in gdata['urls']:
                     if cont == False:
                         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Using config.json quality: '+data['quality'])
@@ -103,10 +108,16 @@ def main(data, cont):
                 if gdata['success'] == True:
                     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
                 else:
+                    tdblogger.comment = 6
+                    tdblogger.send()
                     break
         else: # Streamer is not streaming
+            tdblogger.comment = 4   
+            tdblogger.send()
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+data["username"]+' is not streaming')
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'sleep', data["sleeptime"])
+        tdblogger.comment = 8
+        tdblogger.send()
         time.sleep(data["sleeptime"])
 
 if __name__ == "__main__":

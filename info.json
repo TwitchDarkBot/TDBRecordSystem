@@ -1,0 +1,9 @@
+{
+    "server":"testsrv",
+    "region":"testreg",
+    "logserver":"127.0.0.1",
+    "port":"default",
+    "resend":2,
+    "ssl": "True",
+    "key":""
+}
