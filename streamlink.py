@@ -18,7 +18,7 @@ class TwitchRecorder:
         # global configuration
         self.client_id = "jzkbprff40iqj646a697cyrvl0zt2m6" # don't change this
         # get oauth token value by typing `streamlink --twitch-oauth-authenticate` in terminal
-        self.oauth_token = "agt3kgn1gb8epuccat2zfyma1y3ijk"
+        self.oauth_token = ""
         self.ffmpeg_path = 'ffmpeg'
         self.refresh = 20.0
         self.root_path = "../Videos"
@@ -145,7 +145,7 @@ class TwitchRecorder:
                 self.tdblogger.send()
                 time.sleep(self.refresh)
 
-def main(argv):
+def main():
     twitch_recorder = TwitchRecorder()
 
     twitch_recorder.tdblogger.comment = 1
@@ -154,4 +154,4 @@ def main(argv):
     twitch_recorder.run()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
