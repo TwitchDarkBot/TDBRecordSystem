@@ -26,10 +26,11 @@ def main(data, cont):
         tdblogger.comment = 2
         tdblogger.send()
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+"Getting "+data["username"]+"'s m3u8 data")
-        res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-        gdata = res.json() # save json
-        if gdata["success"] == True: # If streamer is streaming
-            
+        streamer = data["username"]
+        res = tdblogger.status(streamer)
+        if res["status"] == True: # If streamer is streaming
+            res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
+            gdata = res.json() # save json
             print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+data["username"]+' is streaming.')
             # json parsing
             if data['quality_enable'] == 1:
@@ -103,9 +104,8 @@ def main(data, cont):
                     commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
                 os.system(commandline)
                 # Re-Check Streamer is streaming
-                res = requests.get(data["m3u8get"]+"?url=twitch.tv/"+data["username"]) # request streamer is streaming, m3u8 id
-                gdata = res.json() # save json
-                if gdata['success'] == True:
+                res = tdblogger.status(streamer)
+                if res['status'] == True:
                     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'WARN: '+'Restarting the record')
                 else:
                     tdblogger.comment = 6

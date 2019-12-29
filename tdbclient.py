@@ -25,6 +25,7 @@ class client():
         srvinfo = json.load(f)
         f.close
 
+        leve1 = 0
         if self.comment == 4:
             level = 1
         elif self.comment == 9:
@@ -85,3 +86,11 @@ class client():
                 self.comment = 0
                 self.level = 0
                 return rtn
+
+    def status(self, streamer):
+        import requests
+        import json
+
+        res = requests.post('http://api.twitchdarkbot.com/status', json=json.dumps({'username': streamer}))
+
+        return res.json()
