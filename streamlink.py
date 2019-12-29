@@ -78,13 +78,14 @@ class TwitchRecorder:
         self.tdblogger.send()
         
         url = 'https://api.twitch.tv/kraken/streams/' + self.username
+        streamer = self.username
         info = None
         status = 3
         try:
-            r = requests.get(url, headers = {"Client-ID" : self.client_id}, timeout = 15)
-            r.raise_for_status()
-            info = r.json()
-            if info['stream'] == None:
+            res = self.tdblogger.status(streamer)
+            info = res.json()
+
+            if info['status'] == False:
                 self.tdblogger.comment = 4
                 status = 1
 

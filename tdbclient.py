@@ -25,7 +25,7 @@ class client():
         srvinfo = json.load(f)
         f.close
 
-        leve1 = 0
+        level = 0
         if self.comment == 4:
             level = 1
         elif self.comment == 9:
