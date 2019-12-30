@@ -77,26 +77,23 @@ class TwitchRecorder:
         self.tdblogger.comment = 2
         self.tdblogger.send()
         
-        url = 'https://api.twitch.tv/kraken/streams/' + self.username
         streamer = self.username
         info = None
         status = 3
-        try:
-            res = self.tdblogger.status(streamer)
-            info = res.json()
+        res = self.tdblogger.status(streamer)
+        info = res.json()
 
-            if info['status'] == False:
-                self.tdblogger.comment = 4
-                status = 1
-
-            else:
-                self.tdblogger.comment = 3
-                status = 0
-        except requests.exceptions.RequestException as e:
-            if e.response:
-                if e.response.reason == 'Not Found' or e.response.reason == 'Unprocessable Entity':
-                    self.tdblogger.comment = 5
-                    status = 2
+        if info['status'] == False:
+            self.tdblogger.comment = 4
+            status = 1
+        elif info['status'] == True:
+            self.tdblogger.comment = 3
+            status = 0
+        elif info['status'] == None:
+            self.tdblogger.comment =  5
+            status = 2
+        else:
+            status = 3
 
         self.tdblogger.send()
         return status, info
