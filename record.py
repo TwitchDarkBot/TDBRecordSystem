@@ -1,9 +1,9 @@
+import sys
 import requests
 import json
 import os
 import time
 from parse import compile
-import subprocess
 import platform
 import tdbclient
 
@@ -94,15 +94,12 @@ def main(data, cont):
             while True:
                 print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Setting the quality to '+quality)
                 fhname = data["username"]+"-"+time.strftime('%Y-%m-%d.%Hh%Mm%Ss', time.localtime(time.time()))
-                commandline = ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4'
-                #subprocess.run([commandline])
-                os.system(commandline) # streamlink start
+                os.system(ffmpeg+' -err_detect ignore_err -i "'+m3u8id+'" -c copy '+fhname+'.mp4') # streamlink start
                 print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'moving the file named "'+fhname+'".mp4')
                 if platform.system() == 'Windows':
-                    commandline = "move "+fhname+".mp4 "+data["mvtarget"]+"\\"+fhname+".mp4"
+                    os.system("move "+fhname+".mp4 "+data["mvtarget"]+"\\"+fhname+".mp4")
                 elif platform.system() == 'Linux':
-                    commandline = "mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4"
-                os.system(commandline)
+                    os.system("mv "+fhname+".mp4 "+data["mvtarget"]+"/"+fhname+".mp4")
                 # Re-Check Streamer is streaming
                 res = tdblogger.status(streamer)
                 if res['status'] == True:
@@ -133,9 +130,28 @@ if __name__ == "__main__":
     # do not touch this
     data = ''
     m3u8get = "https://pwn.sh/tools/streamapi.py"
-    p = compile("{}.py")
-    result = p.parse(os.path.basename(__file__))
-    username = result[0]
+    if len(sys.argv) == 1:
+        print('No streamer selected! EXIT.')
+        time.sleep(5)
+        exit()
+    elif sys.argv[1] == '':
+        print('No streamer selected! EXIT.')
+        time.sleep(5)
+        exit()
+    elif sys.argv[1] == '--h':
+        print('record.py <streamer>')
+        exit()
+    elif sys.argv[1] == '--help':
+        print('record.py <streamer>')
+        exit()
+    elif sys.argv[1] == '-h':
+        print('record.py <streamer>')
+        exit()
+    elif sys.argv[1] == '-help':
+        print('record.py <streamer>')
+        exit()
+    else:
+        username = sys.argv[1]
     # ============================== fix =================================
     # if you use config.json, change True
     IsConfigFileEnabled = True
@@ -156,9 +172,8 @@ if __name__ == "__main__":
             elif os.path.isfile('bin/ffmpeg.exe'):
                 ffmpeg = 'bin\\ffmpeg.exe'
             else:
-                url = "https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe"
                 f = open("ffmpeg.exe", "wb")
-                res = requests.get(url)
+                res = requests.get("https://raw.githubusercontent.com/TwitchDarkBot/TDBRecordSystem/master/bin/ffmpeg.exe")
                 f.write(res.content)
                 f.close
                 ffmpeg = "ffmpeg.exe"
@@ -173,18 +188,23 @@ if __name__ == "__main__":
         print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Reading Config File')
         fl = open(ConfigFile,'r')
         f = json.load(fl)
-        data['sleeptime'] = f['sleeptime']
-        if f['username_enable'] == 1:
-            data['username'] = f['username']
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+f['username'])
-        elif f['username_enable'] == 0:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+username+'.py')
+        if f['sleeptime'] == 0:
+            data['sleeptime'] = 120
         else:
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown username_enabled')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
-            print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
-            time.sleep(5)
-            exit()
+            data['sleeptime'] = f['sleeptime']
+            
+        if len(sys.argv) == 1:
+            if f['username_enable'] == 1:
+                data['username'] = f['username']
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+f['username'])
+            elif f['username_enable'] == 0:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Starting the program named with '+username+'.py')
+            else:
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Unknown username_enabled')
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Please fill in with 0, 1')
+                print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'ERROR: '+'Program will exit in 5 secounds')
+                time.sleep(5)
+                exit()
 
 
         if f['quality_enable'] == 1:
@@ -214,8 +234,7 @@ if __name__ == "__main__":
     if os.path.isdir(mvtarget):
         nul = 0
     else:
-        commandline = 'mkdir '+mvtarget
-        os.system(commandline)
+        os.system('mkdir '+mvtarget)
 
     # done
     print(time.strftime('[%Y-%m-%d | %H:%M:%S] ', time.localtime(time.time()))+'INFO: '+'Set streamer as '+data['username'])
