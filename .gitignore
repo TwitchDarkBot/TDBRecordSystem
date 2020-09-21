@@ -123,3 +123,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+#Github codespace
+pythonenv3.8
+pythonenv3.8/*
