@@ -1,6 +1,12 @@
 class storage():
     def __init__(self):
+        self.record = record()
+        self.server = "https://www.twitchdarkbot.com/api/tdb/record/"
+        self.uploadqueue = []
         pass
+
+
+
 
 class record():
     def __init__(self):
@@ -9,7 +15,7 @@ class record():
     def m3u8(self, streamer):
         import streamlink
         try:
-            tmp = streamlink.streams("http://twitch.tv/nocopyrightsounds")
+            tmp = streamlink.streams("http://twitch.tv/"+streamer)
         except streamlink.exceptions.PluginError as e:
             print(e)
             return None
@@ -26,7 +32,9 @@ class record():
         return rtn
         pass
 
-    def record(self, name, url):
-        filename=
+    def record(self, name, userid, url):
+        from requests import post
+        rtn = post(self.storage.server+"gettime", json={"id": userid})
 
+        filename = name+"-"+time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())+".mp4"
 
