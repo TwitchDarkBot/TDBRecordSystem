@@ -38,3 +38,12 @@ class record():
 
         filename = name+"-"+time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time())+".mp4"
 
+
+class recmain():
+    def __init__(self):
+        pass
+
+    def main(self):
+        pass
+
+    def 
